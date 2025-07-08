@@ -138,10 +138,12 @@ class User_model extends CI_Model {
         ]);
         }
     }
-    public function getSubjectCode($subj){
-        $query = $this->db->select('code')->where('name', $subj)->get('subjects');
-        $op = $query->row()->code;
-        return $op;
+     public function getSubjectCode($subj_name){
+        $query = $this->db->select('code')->where('name', $subj_name)->get('subjects');
+        if ($query->num_rows() > 0) {
+            return $query->row()->code;
+        }
+        return null; 
     }
     public function getSubjectName($code){
         $query = $this->db->select('name')->where('code', $code)->get('subjects');
@@ -289,4 +291,48 @@ class User_model extends CI_Model {
 
     return $subjects;
     }
+
+    public function teacherUploadSearch($class, $sec, $subj) {
+         $sql = "SELECT sm.id, sm.class,sm.section, sm.subject_code, subj.name, sm.title, sm.description, sm.upload_link, sm.uploaded_by,sm.upload_date
+            FROM study_mat sm
+            join subjects subj on subj.code = sm.subject_code
+            WHERE sm.class = ? AND sm.section = ? AND subj.name = ? AND sm.status='active' ";
+    
+        $query = $this->db->query($sql, array($class, $sec, $subj));
+        return $query->result_array();
+    }
+    
+    public function saveStudyMaterial($data) {
+  
+        if (!isset($data['upload_date'])) {
+            $data['upload_date'] = date('Y-m-d H:i:s');
+        }
+        if (!isset($data['status'])) {
+            $data['status'] = 'active';
+        }
+
+        $this->db->insert('study_mat', $data);
+        return 1; // Return the ID of the newly inserted record
+    }
+    public function getSubjectNameByCode($subj_code){
+        $query = $this->db->select('name')->where('code', $subj_code)->get('subjects');
+        if ($query->num_rows() > 0) {
+            return $query->row()->name;
+        }
+        return null;
+    }
+
+    public function viewSM(){
+        $sql = "SELECT * from study_mat";
+    
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function deleteSM($id){
+        $this->db->set('status', 'inactive');
+        $this->db->where('id', $id);
+        $this->db->update('study_mat');
+    }
+
 }

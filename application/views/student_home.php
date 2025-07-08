@@ -116,6 +116,7 @@
         <div class="circle-buttons">
           <a href="<?= base_url('auth/studentProfile'); ?>">Profile</a>
           <a href="<?= base_url('auth/viewMarks'); ?>">View Marks</a>
+          <a href="<?= base_url('auth/viewSM'); ?>">Study Material</a>
         </div>
       </div>
     </div>

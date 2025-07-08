@@ -462,4 +462,87 @@ class Auth extends CI_Controller {
         }
         
     }
+
+    public function teacherUploadSearch(){
+        $class = $this->input->post('class');
+        $sec = $this->input->post('section');
+        $subj = $this->input->post('subject');
+
+        $this->load->model('User_model');
+
+        $data['t_data'] = $this->User_model->teacherUploadSearch($class,$sec,$subj);
+        $data['subjCode'] = $this->User_model->getSubjectCode($subj);
+        $data['class'] = $class;
+        $data['section'] = $sec;
+        $data['subject'] = $subj;
+        $this->load->view('teacher_upload_sm', $data);
+
+    }
+    public function upload() {
+        $result = 'error';
+        $targetDir = "uploads/";
+
+        if(isset($_POST["submit"])){
+            if(!empty($_FILES["file"]["name"])){
+                $fileName = basename($_FILES["file"]["name"]);
+                $targetFilePath = $targetDir . $fileName;
+                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+
+                $allowTypes = array('jpg', 'png', 'jpeg', 'pdf');
+                if(in_array($fileType, $allowTypes)){
+                    if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)){
+                        $this->load->model('User_model');
+                        $insert = $this->User_model->saveStudyMaterial([
+                            'class' => $this->input->post('class'),
+                            'section' => $this->input->post('section'),
+                            'subject_code' => $this->input->post('subject_code'),
+                            'title' => $this->input->post('title'),
+                            'description' => $this->input->post('desc'),
+                            'upload_link' => $fileName,
+                            'uploaded_by' => $this->input->post('by')
+                        ]);
+                        if($insert > 0){
+                            $result = 'successfully uploaded';
+                    } else {
+                        $result= "File upload failed, please try again.";
+                    }
+                } else {
+                   $result= "Sorry, there was an error uploading your file.";
+                }
+            } else {
+                $result = 'Only JPG, JPEG, PNG, & PDF files are allowed.';
+            }
+        } else {
+            $result= 'Please select a file to upload.';
+        }
+    }
+        $class = $this->input->post('class');
+        $sec = $this->input->post('section');
+        $subj = $this->input->post('subject');
+
+        $this->load->model('User_model');
+
+        $data['t_data'] = $this->User_model->teacherUploadSearch($class,$sec,$subj);
+        $data['subjCode'] = $this->User_model->getSubjectCode($subj);
+        $data['class'] = $class;
+        $data['section'] = $sec;
+        $data['subject'] = $subj;
+        $data['status'] = $result;
+        $this->load->view('teacher_upload_sm', $data);
+}
+
+    public function viewSM(){
+        $this->load->model('User_model');
+
+        $data['sm_data'] = $this->User_model->viewSM();
+        $this->load->view('student_sm',$data);
+    }
+
+    public function delete_sm(){
+        $id = $this->input->post('id');
+        $this->load->model('User_model');
+        $this->User_model->deleteSM($id);
+        $this->teacherUploadSearch();
+    }
+
 }
