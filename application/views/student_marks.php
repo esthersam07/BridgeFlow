@@ -14,7 +14,7 @@
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
       scroll-behavior: smooth;
-      background-color: #f9f9f9;
+      background-color: rgb(250,240,241);
     }
 
     h2 {

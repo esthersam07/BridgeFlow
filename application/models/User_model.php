@@ -335,4 +335,14 @@ class User_model extends CI_Model {
         $this->db->update('study_mat');
     }
 
+    public function studentSMSearch($class, $sec, $subjCode) {
+         $sql = "SELECT sm.id, sm.class,sm.section, sm.subject_code, sm.title, sm.description, sm.upload_link, u.name as uploaded_by,sm.upload_date
+            FROM study_mat sm
+            join users u on u.id=sm.uploaded_by
+            WHERE sm.class = ? AND sm.section = ? AND sm.subject_code=? AND sm.status='active' ";
+    
+        $query = $this->db->query($sql, array($class, $sec, $subjCode));
+        return $query->result_array();
+    }
+
 }

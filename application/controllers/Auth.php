@@ -490,7 +490,10 @@ class Auth extends CI_Controller {
 
                 $allowTypes = array('jpg', 'png', 'jpeg', 'pdf');
                 if(in_array($fileType, $allowTypes)){
-                    if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)){
+                    if ($_FILES['file']['error'] === 1) {
+                        $result= "File size big. Max - 2MB";
+                    } 
+                    elseif(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)){
                         $this->load->model('User_model');
                         $insert = $this->User_model->saveStudyMaterial([
                             'class' => $this->input->post('class'),
@@ -533,8 +536,17 @@ class Auth extends CI_Controller {
 
     public function viewSM(){
         $this->load->model('User_model');
-
+        $id = $this->session->userdata('user_id');
         $data['sm_data'] = $this->User_model->viewSM();
+        $class= $this->User_model->getClass($id);
+        $sec = $this->User_model->getSection($id);
+        $data['class'] = $class;
+        $data['section'] = $sec;
+        if($class==="10"){
+            $data['subjects'] = $this->User_model->get5Subjects($class);
+        }else{
+            $data['subjects'] = $this->User_model->getSubjects($class,$sec);
+        }
         $this->load->view('student_sm',$data);
     }
 
@@ -543,6 +555,28 @@ class Auth extends CI_Controller {
         $this->load->model('User_model');
         $this->User_model->deleteSM($id);
         $this->teacherUploadSearch();
+    }
+
+    public function studentSMSearch(){
+        $class = $this->input->post('class');
+        $sec = $this->input->post('section');
+        $subj = $this->input->post('subject');
+        $this->load->model('User_model');
+        $subjCode = $this->User_model->getSubjectCode($subj);
+
+        $data['t_data'] = $this->User_model->studentSMSearch($class,$sec,$subjCode);
+        //log_message('debug', 'Subject=' . $subj . ', class=' . $class. ', section=' . $sec. ', subjectCode=' . $subjCode);
+        $data['subjCode'] = $subjCode;
+        $data['class'] = $class;
+        $data['section'] = $sec;
+        $data['subject'] = $subj;
+        if($class==="10"){
+            $data['subjects'] = $this->User_model->get5Subjects($class);
+        }else{
+            $data['subjects'] = $this->User_model->getSubjects($class,$sec);
+        }
+        $this->load->view('student_sm', $data);
+
     }
 
 }

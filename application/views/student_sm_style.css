@@ -1,0 +1,190 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: rgb(250,240,241);
+  color: #333;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  min-height: 80vh;
+}
+
+.contentWrapper {
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* SECTION STYLING */
+.searchSection,
+.container {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+}
+
+.searchSection {
+  margin-top: 80px;
+}
+
+/* HEADINGS */
+.searchSection h2,
+.container h2,
+.uploads h3,
+.upload h3 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #010101;
+}
+
+.contentWrapper h2{
+    text-align: center;
+}
+
+/* FORM LAYOUT */
+.searchSection form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: space-between;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+select,
+input[type="text"],
+input[type="file"] {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+.button1,
+.uploadBtn,
+input[type="submit"],
+button {
+  background-color: #a32035;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button1:hover,
+.uploadBtn:hover,
+input[type="submit"]:hover,
+button:hover {
+  background-color: #5a111d;
+}
+
+.no-records {
+  text-align: center;
+  color: #d9534f;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+/* TABLE */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 15px;
+}
+
+th,
+td {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 14px;
+}
+
+thead {
+  background-color: #f4f4f4;
+}
+
+td button {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+/* UPLOAD SECTIONS */
+.container {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.uploads {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.upload {
+  width: 35%;
+  padding-left: 20px;
+}
+
+.upload form table {
+  width: 100%;
+}
+
+.upload form td {
+  padding-bottom: 15px;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 60px;
+  padding: 20px 0;
+  text-align: center;
+  color: #777;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .upload,
+  .uploads {
+    width: 100%;
+    padding: 0;
+    border: none;
+  }
+
+  .searchSection form {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  label {
+    width: 100%;
+  }
+
+  select,
+  input[type="text"],
+  input[type="file"] {
+    width: 100%;
+  }
+}

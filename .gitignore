@@ -30,3 +30,17 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
+
+# Ignore uploaded files
+/uploads/
+
+# Ignore Composer dependencies
+/vendor/
+
+# Ignore log files except index.html to maintain folder structure as git doesn't track empty folders
+/application/logs/*
+!/application/logs/index.html
+
+
+
+
